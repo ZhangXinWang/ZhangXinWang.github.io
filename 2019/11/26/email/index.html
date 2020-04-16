@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/zxw.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/zxw.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="note,todo," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="email学习笔记邮件发送的基本过程与概念邮件发送的过程graph LR     userA((&quot;用户Axx@qq.com&quot;))     userA--&quot;1&quot;--&gt;clientA     clientA[&quot;邮件客户端FoxMail&quot;]     clientA--&quot;2&quot;--&gt;qqServerModule2     subgraph QQ邮箱服务器     qqServerModule1(&quot;POP3服">
+<meta property="og:type" content="article">
+<meta property="og:title" content="email学习笔记">
+<meta property="og:url" content="http://yoursite.com/2019/11/26/email/index.html">
+<meta property="og:site_name" content="张心望的博客">
+<meta property="og:description" content="email学习笔记邮件发送的基本过程与概念邮件发送的过程graph LR     userA((&quot;用户Axx@qq.com&quot;))     userA--&quot;1&quot;--&gt;clientA     clientA[&quot;邮件客户端FoxMail&quot;]     clientA--&quot;2&quot;--&gt;qqServerModule2     subgraph QQ邮箱服务器     qqServerModule1(&quot;POP3服">
+<meta property="article:published_time" content="2019-11-26T08:16:43.000Z">
+<meta property="article:modified_time" content="2019-11-26T08:16:43.000Z">
+<meta property="article:author" content="张心望">
+<meta property="article:tag" content="note">
+<meta property="article:tag" content="todo">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/11/26/email/"/>
+
+
+
+
+
+  <title>email学习笔记 | 张心望的博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">张心望的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">自我迭代</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/26/email/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="张心望">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="张心望的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">email学习笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-26T16:16:43+08:00">
+                2019-11-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/base/" itemprop="url" rel="index">
+                    <span itemprop="name">base</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="email学习笔记"><a href="#email学习笔记" class="headerlink" title="email学习笔记"></a>email学习笔记</h1><h2 id="邮件发送的基本过程与概念"><a href="#邮件发送的基本过程与概念" class="headerlink" title="邮件发送的基本过程与概念"></a>邮件发送的基本过程与概念</h2><h3 id="邮件发送的过程"><a href="#邮件发送的过程" class="headerlink" title="邮件发送的过程"></a>邮件发送的过程</h3><pre class="mermaid">graph LR
+    userA(("用户A<br>xx@qq.com"))
+    userA--"1"-->clientA
+    clientA["邮件客户端<br/>FoxMail"]
+    clientA--"2"-->qqServerModule2
+    subgraph QQ邮箱服务器
+    qqServerModule1("POP3服务器")
+    qqServerModule2("SMTP服务器")
+    qqServerModule3("QQ邮箱<br/>内部存储空间")
+    end
+    qqServerModule2--"3"-->163ServerModule2
+    subgraph 163邮箱服务器
+    163ServerModule1("POP3服务器")
+    163ServerModule2("SMTP服务器")
+    163ServerModule3("163邮箱<br/>内部存储空间")
+    163ServerModule2--"4"-->163ServerModule3
+    163ServerModule1--"7"-->163ServerModule3
+    163ServerModule3--"8"-->163ServerModule1
+    end
+    userB(("用户B<br>xx@163.com"))
+    userB--"5"-->clientB
+    clientB["邮件客户端<br/>FoxMail"]
+    clientB--"6"-->163ServerModule1
+    163ServerModule1--"9"-->clientB
+    clientB--"10"-->userB</pre>
+
+
+
+<p>1.用户A写完一封邮件通过客户端(如Foxmail)使用SMTP协议发送到邮箱的SMTP服务器<br>2.邮箱SMTP服务器收到邮件后会判断收件人是否是自己管辖内的账户<br>  如果是就会直接放入自己的存储空间<br>  如果不是就会通过SMTP协议发送给对应的对应地址的SMTP服务器<br>3.用户B通过客户端向POP3服务端服务器请求收取自己的邮件<br>4.POP3服务器收到请求之后查询内部存储空间<br>  如果有邮件则通过POP3协议发送给用户B<br>  如果没有就返回空</p>
+<h3 id="邮件传输协议"><a href="#邮件传输协议" class="headerlink" title="邮件传输协议"></a>邮件传输协议</h3><ul>
+<li>SMTP协议:全称为 Simple Mail Transfer Protocol,简单邮件传输协议<br>它定义了邮件客户端软件和SMTP邮件服务器之间,以及两台SMTP邮件服务器之间的通信规则</li>
+<li>POP3协议:全称为 Post Office Protocol,邮局协议<br>它定义了邮件客户端软件和POP3邮件服务器的通信规则</li>
+<li>IMAP协议:全称为 Internet Message Access Protocol,Internet消息访问协议<br>它是对POP3协议的一种扩展,也是定义了邮件客户端软件和IMAP邮件服务器的通信规则<h3 id="邮件服务器于客户端"><a href="#邮件服务器于客户端" class="headerlink" title="邮件服务器于客户端"></a>邮件服务器于客户端</h3></li>
+<li>SMTP服务器:通过SMTP协议接收和发送邮件</li>
+<li>POP3服务器:通过POP3协议发送邮件的服务器</li>
+<li>客户端:邮件客户端软件通常集邮件撰写/发送和收发功能于一体<br>主要用于帮助用户将邮件发送给SMTP邮件服务器和从POP3/IMAP邮件服务器读取用户的电子邮件<br>比如常见的FoxMail,Outlook Express<h2 id="手工体验smtp和pop3协议"><a href="#手工体验smtp和pop3协议" class="headerlink" title="手工体验smtp和pop3协议"></a>手工体验smtp和pop3协议</h2><h3 id="SMTP简介"><a href="#SMTP简介" class="headerlink" title="SMTP简介"></a>SMTP简介</h3><blockquote>
+<p>SMTP协议:全称为 Simple Mail Transfer Protocol,简单邮件传输协议.它定义了邮件客户端软件和SMTP邮件服务器之间,以及两台SMTP邮<br>件服务器之间的通信规则<br>SMTP协议的通信双方采用一问一答的命令/响应形式进行对话<br>SMTP协议分为标准SMTP协议和扩展SMTP协议</p>
+<blockquote>
+<p>标准SMTP协议是1982年在RFC821 文档中定义的<br>扩展SMTP协议是1995年在RFC1869 文档中定义的</p>
+<blockquote>
+<p>扩展SMTP协议在标准 SMTP协议基础上的改动非常小,主要增加了邮件安全方面的认证功能,现在我们说的SMTP协议基本上都是扩展SMTP协议</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+<p>参考文档:<a href="https://tools.ietf.org/html/rfc1869" target="_blank" rel="noopener">https://tools.ietf.org/html/rfc1869</a></p>
+<h3 id="SMTP协议中的命令"><a href="#SMTP协议中的命令" class="headerlink" title="SMTP协议中的命令"></a>SMTP协议中的命令</h3><blockquote>
+<p>SMTP 协议中一共定义了18条命令<br>但是发送一封电子邮件的过程通常只需要6条命令  </p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>SMTP命令及格式<br/>&lt;SP&gt;表示空格<br/>&lt;CRLF&gt;表示回车换行</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ehlo&lt;SP&gt;&lt;domain&gt;&lt;CRLF&gt;</td>
+<td>ehlo命令是SMTP邮件发送程序与SMTP邮件接收程序建立连接后必须发送的第一条SMTP命令,参数&lt;domain&gt;表示SMTP邮件发送者的主机名,ehlo命令用于代替传统命令中的helo命令</td>
+</tr>
+<tr>
+<td>auth&lt;SP&gt;&lt;para&gt;&lt;CRLF&gt;</td>
+<td>如果SMTP邮件接收程序需要SMTP邮件发送程序进行认证时,他向SMTP邮件发送程序提示它所采用的认证方式,SMTP邮件发送程序接着应该使用这个命令回应SMTP邮件接收程序,参数&lt;para&gt;表示回应的认证方式,通常是SMTP邮件接收程序先提示的认证方式</td>
+</tr>
+<tr>
+<td>mail&lt;SP&gt;from:&lt;reverse-path&gt;&lt;CRLF&gt;</td>
+<td>此命令用于指定邮件发送者的邮箱地址,参数&lt;reverse-path&gt;表示邮件发送人的邮箱地址</td>
+</tr>
+<tr>
+<td>rcpt&lt;SP&gt;to:&lt;froword-path&gt;&lt;CRLF&gt;</td>
+<td>此命令用于指定邮件接收者的邮箱地址,参数&lt;forword-path&gt;表示收件人的邮箱地址,<br/>如果邮件要发送给多个接受者,那么应该使用多条rcpt&lt;SP&gt;to命令来分别指定每一个接受者的邮箱地址</td>
+</tr>
+<tr>
+<td>data&lt;CRLF&gt;</td>
+<td>此命令用于表示SMTP邮件发送程序开始传动邮件内容,在这命令后面发送的所有数据都被当成邮件内容,直到遇见”&lt;CRLF&gt;.&lt;CRLF&gt;“标识符,则表示邮件内容结束</td>
+</tr>
+<tr>
+<td>quit&lt;CRLF&gt;</td>
+<td>此命令表示要借宿邮件发送过程,SMTP邮件接收程序接收到此命令后将关闭与SMTP邮件服务器的连接</td>
+</tr>
+</tbody></table>
+<h3 id="手动发送过程"><a href="#手动发送过程" class="headerlink" title="手动发送过程"></a>手动发送过程</h3><pre class="mermaid">graph LR
+    root(使用SMTP协议手工发送邮件的步骤)
+    root---step1("1.和SMTP服务器建立连接:<br/>telnet smtp.163.com 25")
+    root---step2("2.ehlo 邮件发送者用户名")
+    root---step3("3.选择登陆认证方式")
+    root---step4("4.分别输入经过Base64编码后的用户名和密码")
+    root---step5("5.指明邮件的发送人和收件人")
+    root---step6("6.编写邮件内容")
+    root---step7("7.输入.表示邮件内容结束")
+    root---step8("8.输入quit命令断开与邮件服务器的连接")</pre>
+
+<h4 id="解释"><a href="#解释" class="headerlink" title="解释:"></a>解释:</h4><ol>
+<li>如果是qq,那么就将163换成qq即可,25换成587,25或者587是端口,其他邮箱同理  </li>
+<li>告诉SMTP服务器发送者的用户名  </li>
+<li>登录认证方式,我们一般使用login,即输入命令:auth:login qq邮箱需要先输入 starttls</li>
+<li>qq邮箱需要的是进过Base64编码的授权码  </li>
+</ol>
+<p>5.6.7.8. 没有什么坑,按照范例来就好</p>
+<h4 id="qq邮箱范例"><a href="#qq邮箱范例" class="headerlink" title="qq邮箱范例:"></a>qq邮箱范例:</h4><blockquote>
+<p>括号内的为备注</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">telnet smtp.qq.com 587</span><br><span class="line"></span><br><span class="line">ehlo 1336789387@qq.com  (账号1336789387也可以)</span><br><span class="line"></span><br><span class="line">starttls</span><br><span class="line"></span><br><span class="line">auth login</span><br><span class="line"></span><br><span class="line">MTMzNjc4OTM4N0BxcS5jb10&#x3D;  (1336789387@qq.com)</span><br><span class="line"></span><br><span class="line">bWR4eWt0eGthdmhoamFiYg&#x3D;&#x3D;  (mdxyktxkavhyjacb)</span><br><span class="line"></span><br><span class="line">mail from:&lt;1336789387@qq.com&gt;</span><br><span class="line"></span><br><span class="line">rcpt to:&lt;1791738789@qq.com&gt;</span><br><span class="line"></span><br><span class="line">data</span><br><span class="line"></span><br><span class="line">from:&lt;1336789387@163.com&gt;</span><br><span class="line">to:&lt;1791738789@qq.com&gt;</span><br><span class="line">subject:hello world</span><br><span class="line">This is the first email sent by hand using the SMTP protocol</span><br><span class="line">.</span><br><span class="line"></span><br><span class="line">quit</span><br></pre></td></tr></table></figure>
+<h3 id="手动接收邮件"><a href="#手动接收邮件" class="headerlink" title="手动接收邮件"></a>手动接收邮件</h3><pre class="mermaid">graph LR
+    root(使用SMTP协议手工接收邮件的步骤)
+    root---step1("1.和SMTP服务器建立连接:<br/>telnet pop3.163.com 110<br/>telnet pop.qq.com 110")
+    root---step2("2.user 用户名 qq要求必须是邮箱")
+    root---step3("3.pass 密码 qq是授权码")
+    root---step4("4.其他各种查看服务器邮件的命令")
+    root---step5("8.输入quit命令断开与邮件服务器的连接")</pre>
+<p>qq邮箱范例:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">telnet pop.qq.com 110</span><br><span class="line"></span><br><span class="line">user 1336789387@qq.com</span><br><span class="line"></span><br><span class="line">pass mdxyktxkavhyjacb</span><br><span class="line"></span><br><span class="line">stat </span><br><span class="line"></span><br><span class="line">list </span><br><span class="line"></span><br><span class="line">retr 1</span><br><span class="line"></span><br><span class="line">dele 1</span><br><span class="line"></span><br><span class="line">noop</span><br><span class="line"></span><br><span class="line">quit</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里有个比较坑的地方就是user和pass这一块的内容必须一次性的输入正确,不能修改,修改对了也没有用</p>
+</blockquote>
+<h4 id="相关命令详解"><a href="#相关命令详解" class="headerlink" title="相关命令详解"></a>相关命令详解</h4><table>
+<thead>
+<tr>
+<th>SMTP命令及格式<br/>&lt;SP&gt;表示空格<br/>&lt;CRLF&gt;表示回车换行</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>user&lt;SP&gt;username&lt;CRLF&gt;</td>
+<td>user命令是POP3客户端程序与POP3邮件服务器建立后发送的第一条命令,参数username表示收件人的人账户名称(这里用原来的就好)</td>
+</tr>
+<tr>
+<td>pass&lt;SP&gt;password&lt;CRLF&gt;</td>
+<td>pass命令是在user命令执行成功后接着发送的命令,参数password表示账户密码</td>
+</tr>
+<tr>
+<td>stat&lt;CRLF&gt;</td>
+<td>stat命令用于查询邮箱统计信息,后面的两个数字表示邮件的数目和占用字节大小(不过qq邮箱网页上的和我在这里看到不太一样)</td>
+</tr>
+<tr>
+<td>list&lt;SP&gt;[msg#]&lt;CRLF&gt;</td>
+<td>list命令用于查出邮箱中邮件信息,msg#表示邮件序列号,是可选参数.当不指定时列出所有的邮件信息,</td>
+</tr>
+<tr>
+<td>uidl&lt;SP&gt;msg#&lt;CRLF&gt;</td>
+<td>uidl命令查询谋一份邮件的唯一标识,参数msg#表示邮件序列号</td>
+</tr>
+<tr>
+<td>retr&lt;SP&gt;msg#&lt;CRLF&gt;</td>
+<td>retr命令获取某一封邮件内容,参数msg#表示邮件序列号</td>
+</tr>
+<tr>
+<td>dele&lt;SP&gt;msg#&lt;CRLF&gt;</td>
+<td>dele命令用于标记删除某一封邮件,不是立刻真的删除,只有执行quit命令退出POP3邮件服务器时才会真的删除</td>
+</tr>
+<tr>
+<td>rest&lt;CRLF&gt;</td>
+<td>rest命令用于清除所有删除标记</td>
+</tr>
+<tr>
+<td>top&lt;SP&gt;msg#&lt;SP&gt;n&lt;CRLF&gt;</td>
+<td>top命令用于获取序号为msg的邮件前n行内容</td>
+</tr>
+<tr>
+<td>noop&lt;CRLF&gt;</td>
+<td>noop命令用于检查POP3客户端与服务器的连接情况</td>
+</tr>
+<tr>
+<td>quit&lt;CRLF&gt;</td>
+<td>quit命令用于借宿邮件接收过程,执行此命令,POP3服务器会删除所有标记了的邮件,关闭与POP3客户端的连接</td>
+</tr>
+</tbody></table>
+<h2 id="邮件内容详解"><a href="#邮件内容详解" class="headerlink" title="邮件内容详解"></a>邮件内容详解</h2><blockquote>
+<p>邮件遵循RFC822文档和MIME协议</p>
+<blockquote>
+<p>RFC822文档定义邮件的基本格式<br>MIME协议定义邮件的具体细节</p>
+</blockquote>
+</blockquote>
+<h3 id="范例"><a href="#范例" class="headerlink" title="范例:"></a>范例:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">Received: from vip.ccb.com (unknown [113.57.178.241])</span><br><span class="line">        by newmx39.qq.com (NewMx) with SMTP id</span><br><span class="line">        for &lt;1336789387@qq.com&gt;; Sat, 28 Dec 2019 01:59:54 +0800</span><br><span class="line">X-QQ-FEAT: y37167hFrfVEjfHxpsOqS0boY0Vv3hbEhRXmhYgWrdM&#x3D;</span><br><span class="line">X-QQ-MAILINFO: ObpyOLNbESSk6OKd+DJ9&#x2F;SHErARu1daO07Kw4PHkAhFMqO8mEbRL9OPln</span><br><span class="line">        bBpOLdhxg4YyNui535W6lHS6XpwZUJYRHJsRYzIS2zDaJ900f11Te2232kOFguri7SIYYtg</span><br><span class="line">        MxIxPsHQzoNF&#x2F;gVGOGWEMYuLf+aromZ3kkufi4DWIjV+</span><br><span class="line">X-QQ-mid: mx39t1577469594tdvvbsvsj</span><br><span class="line">X-QQ-ORGSender: service@vip.ccb.com</span><br><span class="line">X-QQ-XMAILINFO: OOAQOIAXcEJZWtGNNSzEy+&#x2F;cE5za9lGv9S6nNmLJgg8mjG8dILRN0+UW6kKnt8</span><br><span class="line">         CaeqcGtCmzJUsvGnm8+NCDjjv95&#x2F;FchyxN6UcPWfJiKhf4T9tUud7fkdlbpuraBBT0XZY&#x2F;tvljzv</span><br><span class="line">         UovxYCs216edCXOr0BQNzlELzwjga697XTmZd+bd9AzzxcqcirvXTK3DC7KynIRqma7+&#x2F;jx1+j+i</span><br><span class="line">         FXM&#x2F;1H67yliT0M2mVuQ5vp5VluFOnGN55e+VHU3bU5ZU5fc36JAm93jDl68HtKj+Wlsi0EfI8Svu</span><br><span class="line">         Rqdyzrzdo2d4hAfPLdVV4lEK&#x2F;&#x2F;DAQIGvAlRRBN5gpE3WE&#x2F;d66kIMcjz+ANFV+fJN&#x2F;tcn6qJF5bm7</span><br><span class="line">         SUErgCH42JToWZusC9vKJJjfiY0NlA3413ynEdjG6iFj0efHrAga5&#x2F;RHrScBg1rA3Jv31QubpcHF</span><br><span class="line">         6aL6ZCAJE9rx&#x2F;IMsvQck7WarJfjJnu6ExOJM8v1+hKMs5v3tbSKvrn15c697AfOT5G0LjyTQlXPn</span><br><span class="line">         QnaIL7veBi4fJLMGoaWlhNqrJHLrk+BzLe9n53q5TVHrUPlYYkbGMakzOdjAoWATkhEawtvVtWAt</span><br><span class="line">         Qv+dTOPEQLi&#x2F;RDxdnVdrhu6XNYzj7UCBzgMTFXBh78hCEu5P0dPcaFDNx8Rqt&#x2F;3GTVo7z4I+3iSb</span><br><span class="line">         &#x2F;0mILB04&#x2F;TBXFrJ+CAXssYnDZ9QQ28Tvv4TG0mb2COZBXm1f6ifuRnXQIfidzfT8cJ3aAQp31u6H</span><br><span class="line">         HSxrvThOV1Bzw&#x3D;</span><br><span class="line">Message-ID: &lt;1516679348.15251577397823338.JavaMail.ncismigbat@by18cisplap2003&gt;</span><br><span class="line">Date: Sat, 28 Dec 2019 01:59:53 +0800 (CST)</span><br><span class="line">From: service@vip.ccb.com</span><br><span class="line">To: 1336789387@QQ.COM</span><br><span class="line">Subject: &#x3D;?GBK?B?1tC5+r2oyejS+NDQ0MXTw7+otefX09XLtaU&#x3D;?&#x3D;</span><br><span class="line">MIME-Version: 1.0</span><br><span class="line">Content-Type: multipart&#x2F;mixed; boundary&#x3D;&quot;----&#x3D;_Part_1525_1669750793.1577397823338&quot;</span><br><span class="line"></span><br><span class="line">------&#x3D;_Part_1525_1669750793.1577397823338</span><br><span class="line">Content-Type: text&#x2F;html; charset&#x3D;utf-8</span><br><span class="line">Content-Transfer-Encoding: base64</span><br><span class="line"></span><br><span class="line">PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMDEgVHJhbnNpdGlvbmFs</span><br><span class="line">Ly9FTiIgImh0dHA6Ly93d3cudzMub3JnL1RSL2h0bWw0L2xvb3NlLmR0ZCI+CjxodG1sPgogPGhl</span><br><span class="line">YWQ+CiAgPHRpdGxlPiDkuK3lm73lu7rorr7pk7booYzkv6HnlKjljaHpvpnljaHkv6HnlKjljaHl</span><br><span class="line">r7notKbljZUgPC90aXRsZT4KICA8bWV0YSBodHRwLWVxdWl2PSJDb250ZW50LVR5cGUiIGNvbnRl</span><br><span class="line"></span><br><span class="line">.</span><br></pre></td></tr></table></figure>
+<h4 id="RFC822文档"><a href="#RFC822文档" class="headerlink" title="RFC822文档"></a>RFC822文档</h4><blockquote>
+<p>RFC822由邮件头和邮件组成<br>邮件头字段|说明<br>—|—<br>Received|该字段基本格式为<code>Received: from A by B for C</code>,A为发送方,B为接收方,C为吉首人邮箱地址.由SMTP服务器填写<br>From|发件人邮件地址,邮件阅读器中发件人地址来源于此,可以乱写,可以不写,可以伪造.所以发件人不一定为真的<br>To|收件人地址<br>Subject|指定邮件主题,如果主题内容中包含ASCII码以外的字符,通常要对其内容编码<br>cc|邮件抄送地址<br>bcc|邮件密送地址,邮件阅读器通常不会显示密送地址,而会显示抄送地址</p>
+</blockquote>
+<h5 id="BRC822文档的两个问题"><a href="#BRC822文档的两个问题" class="headerlink" title="BRC822文档的两个问题:"></a>BRC822文档的两个问题:</h5><ol>
+<li>定义了邮件的主体结构和邮件有地段的详细细节,但是没有定义邮件提的格式,RFC822文档定义的邮件体部分通常都只能用于表述一段普通的文本,而无法表达出图片/声音等二进制数据</li>
+<li>SMTP服务器在接收邮件内容是当收到单行<code>.</code>时会认为邮件已接收,可能造成内容缺失<br>MIME解决了这两个问题<h4 id="MIME协议"><a href="#MIME协议" class="headerlink" title="MIME协议"></a>MIME协议</h4></li>
+</ol>
+<ul>
+<li>全称:Multipurpose Internet Mail Extension(协议)</li>
+<li>中文翻译:多用途因特网邮件扩展(协议)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Subject: &#x3D;?GBK?B?1tC5+r2oyejS+NDQ0MXTw7+otefX09XLtaU&#x3D;?&#x3D;</span><br><span class="line">MIME-Version: 1.0</span><br><span class="line">Content-Type: multipart&#x2F;mixed; boundary&#x3D;&quot;----&#x3D;_Part_1525_1669750793.1577397823338&quot;</span><br><span class="line"></span><br><span class="line">------&#x3D;_Part_1525_1669750793.1577397823338</span><br><span class="line">Content-Type: text&#x2F;html; charset&#x3D;utf-8</span><br><span class="line">Content-Transfer-Encoding: base64</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<blockquote>
+<p>一个采用了MIME协议的电子邮件就叫做MIME邮件<br>MIME邮件在RFC822文档中定义的邮件头字段的基础上,扩充了一些自己专用的邮件头字段,例如:</p>
+<blockquote>
+<p>使用MIME-Version头字段指定MIME协议的版本<br>使用Content-Type头字段指定邮件体的MIME类型<br>使用Content-Transfer-Encoding头字段指定编码方法</p>
+<blockquote>
+<p>其中,“multipart/mixed”部分说明邮件体中包含有多段数据,每段数据之间使用boundary属性中指定的字符文本作为分隔标识符<br>MIME邮件也扩展了RFC822文档中已经定义了的邮件头字段的内涵,例如:</p>
+<blockquote>
+<p>定义了subject头字段中的值内容的格式,以便通过编码的方式让邮件主题中也可以使用非ASCII码的字符<br>subject头字段中的值嵌套在一对<code>=?</code>和<code>?=</code>标记符之间,标记符之间的内容由三部分组成:</p>
+<ul>
+<li>邮件主题的原始内容的字符集 </li>
+<li>当前采用的编码方式</li>
+<li>编码后的结果</li>
+</ul>
+<p>这三部分之间使用<code>?</code>进行分隔</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<h2 id="JavaMail发送-带图片和附件-和接收邮件"><a href="#JavaMail发送-带图片和附件-和接收邮件" class="headerlink" title="JavaMail发送(带图片和附件)和接收邮件"></a>JavaMail发送(带图片和附件)和接收邮件</h2><h3 id="JavaMail介绍"><a href="#JavaMail介绍" class="headerlink" title="JavaMail介绍"></a>JavaMail介绍</h3><blockquote>
+<p>JavaMail是sun公司(现以被甲骨文收购)为方便Java开发人员在应用程序中实现邮件发送和接收功能而提供的一套标准开发包<br>它支持一些常用的邮件协议,如前面所讲的SMTP,POP3,IMAP,还有MIME等<br>我们在使用JavaMail API 编写邮件时,无须考虑邮件的底层实现细节,只要调用JavaMail开发包中相应的API类就可以了</p>
+</blockquote>
+<h3 id="JavaMail-API"><a href="#JavaMail-API" class="headerlink" title="JavaMail API"></a>JavaMail API</h3><p>JavaMail API按照功能可以分为三大类:</p>
+<ul>
+<li>创建和解析邮件的API</li>
+<li>发送邮件的API</li>
+<li>接收邮件的API</li>
+</ul>
+<pre class="mermaid">graph LR
+session1["Session对象:<br/>定义整个程序所需环境信息,<br/>比如主机名,端口号采用的邮件发送和接收的协议"]
+session1--创建-->transport
+transport["Transport对象:<br/>用来发送邮件"]
+message1["Message对象:<br/>表示一份电子邮件"]
+message1-.引用.->transport
+transport==>server
+server(("邮件服务器"))
+server==>store
+store["Store对象:<br/>用来接收邮件"]
+session2["Session对象:<br/>定义整个程序所需环境信息,<br/>比如主机名,端口号采用的邮件发送和接收的协议"]
+session2--创建-->store
+store--创建-->message2
+message2["Message对象:<br/>表示一份电子邮件"]</pre>
+
+<p>以上三种类型的API由多个类组成,其中核心的由四个类:</p>
+<ul>
+<li><code>Message类</code>:<code>javax.mail.Message类</code>是创建和解析邮件的核心API,这是一个抽象类,通常使用它的子类<code>javax.mail.internet.MimeMessage类</code>.它的实例对象表示一份电子邮件.客户端程序发送邮件时,首先使用创建邮件的JavaMail API创建出封装了邮件数据的<code>Message对象</code>,然后把这个对象传递给邮件发送API<code>Transport 类</code>发送.客户端程序接收邮件时,邮件接收API把接收到的邮件数据封装在<code>Message类</code>的实例中,客户端程序在使用邮件解析API从这个对象中解析收到的邮件数据.</li>
+<li><code>Transport类</code>:<code>javax.mail.Transport类</code>是发送邮件的核心API 类,它的实例对象代表实现了某个邮件发送协议的邮件发送对象,例如<code>SMTP协议</code>,客户端程序创建好<code>Message对象</code>后,只需要使用邮件发送API得到<code>Transport对象</code>,然后把<code>Message对象</code>传递给<code>Transport对象</code>,并调用它的发送方法,就可以把邮件发送给指定的<code>SMTP服务器</code>.</li>
+<li><code>Store类</code>:<code>javax.mail.Store类</code>是接收邮件的核心API类,它的实例对象代表实现了某个邮件接收协议的邮件接收对象,例如 POP3协议,客户端程序接收邮件时,只需要使用邮件接收API得到<code>Store对象</code>,然后调用<code>Store对象</code>的接收方法,就可以从指定的<code>POP3服务器</code>获得邮件数据,并把这些邮件数据封装到表示邮件的<code>Message对象</code>中.</li>
+<li><code>Session类</code>:<code>javax.mail.Session类</code>用于定义整个应用程序所需的环境信息,以及收集客户端与邮件服务器建立网络连接的会话信息,例如邮件服务器的主机名/端口号/采用的邮件发送和接收协议等.<code>Session对象</code>根据这些信息构建用于邮件收发的<code>Transport对象</code>和<code>Store对象</code>,以及为客户端创建<code>Message对象</code>时提供信息支持.</li>
+</ul>
+<h3 id="相关jar包"><a href="#相关jar包" class="headerlink" title="相关jar包"></a>相关jar包</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- javaMailAPI --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javax.mail<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>javax.mail-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.6.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- javaMailAPI的一种实现 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.sun.mail<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>javax.mail<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.6.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在引入javaMailAPI的同时还需要引入他的实现</p>
+</blockquote>
+<h3 id="使用JavaMailAPI实现发送和接收邮件"><a href="#使用JavaMailAPI实现发送和接收邮件" class="headerlink" title="使用JavaMailAPI实现发送和接收邮件"></a>使用JavaMailAPI实现发送和接收邮件</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> util;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.activation.DataHandler;</span><br><span class="line"><span class="keyword">import</span> javax.activation.FileDataSource;</span><br><span class="line"><span class="keyword">import</span> javax.mail.*;</span><br><span class="line"><span class="keyword">import</span> javax.mail.internet.*;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">import</span> java.util.Properties;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EmailTest</span> </span>&#123;</span><br><span class="line">    <span class="comment">//发件人地址</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String senderAddress = <span class="string">"1336789387@qq.com"</span>;</span><br><span class="line">    <span class="comment">//发件人账户名</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String senderAccount = <span class="string">"1336789387@qq.com"</span>;</span><br><span class="line">    <span class="comment">//发件人账户密码</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String senderPassword = <span class="string">"jbiykarygvkbhi"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//收件人地址</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String recipientAddress = <span class="string">"1791738789@qq.com"</span>;</span><br><span class="line">    <span class="comment">//收件人账户名</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String recipientAccount = <span class="string">"1791738789@qq.com"</span>;</span><br><span class="line">    <span class="comment">//收件人账户密码</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String recipientPassword = <span class="string">"jbiykarygvkbhi"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 发送邮件</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sendEmail</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">//1、连接邮件服务器的参数配置</span></span><br><span class="line">        Properties props = <span class="keyword">new</span> Properties();</span><br><span class="line">        <span class="comment">//设置用户的认证方式</span></span><br><span class="line">        props.setProperty(<span class="string">"mail.smtp.auth"</span>, <span class="string">"true"</span>);</span><br><span class="line">        <span class="comment">//设置传输协议</span></span><br><span class="line">        props.setProperty(<span class="string">"mail.transport.protocol"</span>, <span class="string">"smtp"</span>);</span><br><span class="line">        <span class="comment">//设置发件人的SMTP服务器地址</span></span><br><span class="line">        props.setProperty(<span class="string">"mail.smtp.host"</span>, <span class="string">"smtp.qq.com"</span>);</span><br><span class="line">        <span class="comment">//2、创建定义整个应用程序所需的环境信息的 Session 对象</span></span><br><span class="line">        Session session = Session.getInstance(props);</span><br><span class="line">        <span class="comment">//设置调试信息在控制台打印出来</span></span><br><span class="line">        session.setDebug(<span class="keyword">true</span>);</span><br><span class="line">        <span class="comment">//3、创建邮件的实例对象</span></span><br><span class="line">        Message msg = getMimeMessage(session);</span><br><span class="line">        <span class="comment">//4、根据session对象获取邮件传输对象Transport</span></span><br><span class="line">        Transport transport = session.getTransport();</span><br><span class="line">        <span class="comment">//设置发件人的账户名和密码</span></span><br><span class="line">        transport.connect(senderAccount, senderPassword);</span><br><span class="line">        <span class="comment">//发送邮件，并发送到所有收件人地址，message.getAllRecipients() 获取到的是在创建邮件对象时添加的所有收件人, 抄送人, 密送人</span></span><br><span class="line">        transport.sendMessage(msg, msg.getAllRecipients());</span><br><span class="line">        <span class="comment">//5、关闭邮件连接</span></span><br><span class="line">        transport.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获得创建一封邮件的实例对象</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> session</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> MimeMessage <span class="title">getMimeMessage</span><span class="params">(Session session)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">//1.创建一封邮件的实例对象</span></span><br><span class="line">        MimeMessage msg = <span class="keyword">new</span> MimeMessage(session);</span><br><span class="line">        <span class="comment">//2.设置发件人地址</span></span><br><span class="line">        msg.setFrom(<span class="keyword">new</span> InternetAddress(senderAddress));</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 3.设置收件人地址（可以增加多个收件人、抄送、密送），即下面这一行代码书写多行</span></span><br><span class="line"><span class="comment">         * MimeMessage.RecipientType.TO:发送</span></span><br><span class="line"><span class="comment">         * MimeMessage.RecipientType.CC：抄送</span></span><br><span class="line"><span class="comment">         * MimeMessage.RecipientType.BCC：密送</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        msg.setRecipient(MimeMessage.RecipientType.TO, <span class="keyword">new</span> InternetAddress(recipientAddress));</span><br><span class="line">        <span class="comment">//4.设置邮件主题</span></span><br><span class="line">        msg.setSubject(<span class="string">"邮件主题(包含图片和附件)"</span>, <span class="string">"UTF-8"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//下面是设置邮件正文</span></span><br><span class="line">        <span class="comment">//msg.setContent("简单的纯文本邮件！", "text/html;charset=UTF-8");</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 5. 创建图片"节点"</span></span><br><span class="line">        MimeBodyPart image = <span class="keyword">new</span> MimeBodyPart();</span><br><span class="line">        <span class="comment">// 读取本地文件</span></span><br><span class="line">        DataHandler dh = <span class="keyword">new</span> DataHandler(<span class="keyword">new</span> FileDataSource(<span class="string">"src\\mailTestPic.png"</span>));</span><br><span class="line">        <span class="comment">// 将图片数据添加到"节点"</span></span><br><span class="line">        image.setDataHandler(dh);</span><br><span class="line">        <span class="comment">// 为"节点"设置一个唯一编号（在文本"节点"将引用该ID）</span></span><br><span class="line">        image.setContentID(<span class="string">"mailTestPic"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 6. 创建文本"节点"</span></span><br><span class="line">        MimeBodyPart text = <span class="keyword">new</span> MimeBodyPart();</span><br><span class="line">        <span class="comment">// 这里添加图片的方式是将整个图片包含到邮件内容中, 实际上也可以以 http 链接的形式添加网络图片</span></span><br><span class="line">        text.setContent(<span class="string">"这是一张图片&lt;br/&gt;"</span> +</span><br><span class="line">                        <span class="string">"&lt;a href='https://rescdn.qqmail.com/zh_CN/htmledition/images/spacer1e9c5d.gif'&gt;"</span> +</span><br><span class="line">                        <span class="string">"  &lt;img src='cid:mailTestPic'/&gt;"</span> +</span><br><span class="line">                        <span class="string">"&lt;/a&gt;"</span>,</span><br><span class="line">                <span class="string">"text/html;charset=UTF-8"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 7. （文本+图片）设置 文本 和 图片"节点"的关系（将 文本 和 图片"节点"合成一个混合"节点"）</span></span><br><span class="line">        MimeMultipart mm_text_image = <span class="keyword">new</span> MimeMultipart();</span><br><span class="line">        mm_text_image.addBodyPart(text);</span><br><span class="line">        mm_text_image.addBodyPart(image);</span><br><span class="line">        mm_text_image.setSubType(<span class="string">"related"</span>);    <span class="comment">// 关联关系</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 8. 将 文本+图片 的混合"节点"封装成一个普通"节点"</span></span><br><span class="line">        <span class="comment">// 最终添加到邮件的 Content 是由多个 BodyPart 组成的 Multipart, 所以我们需要的是 BodyPart,</span></span><br><span class="line">        <span class="comment">// 上面的 mailTestPic 并非 BodyPart, 所有要把 mm_text_image 封装成一个 BodyPart</span></span><br><span class="line">        MimeBodyPart text_image = <span class="keyword">new</span> MimeBodyPart();</span><br><span class="line">        text_image.setContent(mm_text_image);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 9. 创建附件"节点"</span></span><br><span class="line">        MimeBodyPart attachment = <span class="keyword">new</span> MimeBodyPart();</span><br><span class="line">        <span class="comment">// 读取本地文件</span></span><br><span class="line">        DataHandler dh2 = <span class="keyword">new</span> DataHandler(<span class="keyword">new</span> FileDataSource(<span class="string">"src\\mailTestDoc.docx"</span>));</span><br><span class="line">        <span class="comment">// 将附件数据添加到"节点"</span></span><br><span class="line">        attachment.setDataHandler(dh2);</span><br><span class="line">        <span class="comment">// 设置附件的文件名（需要编码）</span></span><br><span class="line">        attachment.setFileName(MimeUtility.encodeText(dh2.getName()));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 10. 设置（文本+图片）和 附件 的关系（合成一个大的混合"节点" / Multipart ）</span></span><br><span class="line">        MimeMultipart mm = <span class="keyword">new</span> MimeMultipart();</span><br><span class="line">        mm.addBodyPart(text_image);</span><br><span class="line">        mm.addBodyPart(attachment);     <span class="comment">// 如果有多个附件，可以创建多个多次添加</span></span><br><span class="line">        mm.setSubType(<span class="string">"mixed"</span>);         <span class="comment">// 混合关系</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 11. 设置整个邮件的关系（将最终的混合"节点"作为邮件的内容添加到邮件对象）</span></span><br><span class="line">        msg.setContent(mm);</span><br><span class="line">        <span class="comment">//设置邮件的发送时间,默认立即发送</span></span><br><span class="line">        msg.setSentDate(<span class="keyword">new</span> Date());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 接收邮件</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">recipientMail</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">//1、连接邮件服务器的参数配置</span></span><br><span class="line">        Properties props = <span class="keyword">new</span> Properties();</span><br><span class="line">        <span class="comment">//设置传输协议</span></span><br><span class="line">        props.setProperty(<span class="string">"mail.store.protocol"</span>, <span class="string">"pop3"</span>);</span><br><span class="line">        <span class="comment">//设置收件人的POP3服务器</span></span><br><span class="line">        props.setProperty(<span class="string">"mail.pop3.host"</span>, <span class="string">"pop.qq.com"</span>);</span><br><span class="line">        <span class="comment">//2、创建定义整个应用程序所需的环境信息的 Session 对象</span></span><br><span class="line">        Session session = Session.getInstance(props);</span><br><span class="line">        <span class="comment">//设置调试信息在控制台打印出来</span></span><br><span class="line">        <span class="comment">//session.setDebug(true);</span></span><br><span class="line"></span><br><span class="line">        Store store = session.getStore(<span class="string">"pop3"</span>);</span><br><span class="line">        <span class="comment">//连接收件人POP3服务器</span></span><br><span class="line">        store.connect(<span class="string">"pop.qq.com"</span>, recipientAccount, recipientPassword);</span><br><span class="line">        <span class="comment">//获得用户的邮件账户，注意通过pop3协议获取某个邮件夹的名称只能为inbox</span></span><br><span class="line">        Folder folder = store.getFolder(<span class="string">"inbox"</span>);</span><br><span class="line">        <span class="comment">//设置对邮件账户的访问权限</span></span><br><span class="line">        folder.open(Folder.READ_WRITE);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//得到邮件账户的所有邮件信息</span></span><br><span class="line">        Message[] messages = folder.getMessages();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; messages.length; i++) &#123;</span><br><span class="line">            <span class="comment">//获得邮件主题</span></span><br><span class="line">            String subject = messages[i].getSubject();</span><br><span class="line">            System.out.println(<span class="string">"subject = "</span> + subject);</span><br><span class="line">            <span class="comment">//获得邮件发件人</span></span><br><span class="line">            Address[] from = messages[i].getFrom();</span><br><span class="line">            <span class="comment">//获取邮件内容（包含邮件内容的html代码）</span></span><br><span class="line">            String content = (String) messages[i].getContent();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//关闭邮件夹对象</span></span><br><span class="line">        folder.close();</span><br><span class="line">        <span class="comment">//关闭连接对象</span></span><br><span class="line">        store.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<blockquote>
+<p>本文章参考[YSOcean博客][YSOcean博客]<br><a href="https://www.cnblogs.com/ysocean/p/7652934.html" target="_blank" rel="noopener">https://www.cnblogs.com/ysocean/p/7652934.html</a><br><a href="https://www.cnblogs.com/ysocean/p/7653252.html" target="_blank" rel="noopener">https://www.cnblogs.com/ysocean/p/7653252.html</a></p>
+</blockquote>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享,您的支持将鼓励我继续创作!</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="张心望 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="张心望 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/note/" rel="tag"># note</a>
+          
+            <a href="/tags/todo/" rel="tag"># todo</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/26/note/" rel="next" title="note">
+                <i class="fa fa-chevron-left"></i> note
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/11/26/git%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="prev" title="git复习笔记(未完成)">
+                git复习笔记(未完成) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">张心望</p>
+              <p class="site-description motion-element" itemprop="description">读书,实践,复盘</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zhangxinwang" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zhangxinwang17@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#email学习笔记"><span class="nav-number">1.</span> <span class="nav-text">email学习笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#邮件发送的基本过程与概念"><span class="nav-number">1.1.</span> <span class="nav-text">邮件发送的基本过程与概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#邮件发送的过程"><span class="nav-number">1.1.1.</span> <span class="nav-text">邮件发送的过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#邮件传输协议"><span class="nav-number">1.1.2.</span> <span class="nav-text">邮件传输协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#邮件服务器于客户端"><span class="nav-number">1.1.3.</span> <span class="nav-text">邮件服务器于客户端</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#手工体验smtp和pop3协议"><span class="nav-number">1.2.</span> <span class="nav-text">手工体验smtp和pop3协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SMTP简介"><span class="nav-number">1.2.1.</span> <span class="nav-text">SMTP简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SMTP协议中的命令"><span class="nav-number">1.2.2.</span> <span class="nav-text">SMTP协议中的命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手动发送过程"><span class="nav-number">1.2.3.</span> <span class="nav-text">手动发送过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#解释"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">解释:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#qq邮箱范例"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">qq邮箱范例:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手动接收邮件"><span class="nav-number">1.2.4.</span> <span class="nav-text">手动接收邮件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#相关命令详解"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">相关命令详解</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#邮件内容详解"><span class="nav-number">1.3.</span> <span class="nav-text">邮件内容详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#范例"><span class="nav-number">1.3.1.</span> <span class="nav-text">范例:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#RFC822文档"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">RFC822文档</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#BRC822文档的两个问题"><span class="nav-number">1.3.1.1.1.</span> <span class="nav-text">BRC822文档的两个问题:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MIME协议"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">MIME协议</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaMail发送-带图片和附件-和接收邮件"><span class="nav-number">1.4.</span> <span class="nav-text">JavaMail发送(带图片和附件)和接收邮件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JavaMail介绍"><span class="nav-number">1.4.1.</span> <span class="nav-text">JavaMail介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JavaMail-API"><span class="nav-number">1.4.2.</span> <span class="nav-text">JavaMail API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关jar包"><span class="nav-number">1.4.3.</span> <span class="nav-text">相关jar包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用JavaMailAPI实现发送和接收邮件"><span class="nav-number">1.4.4.</span> <span class="nav-text">使用JavaMailAPI实现发送和接收邮件</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">张心望</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+
+  <script src='https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js'></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({theme: 'forest'});
+    }
+  </script>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
